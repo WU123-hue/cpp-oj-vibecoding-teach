@@ -170,13 +170,52 @@ CREATE TABLE users (
 
 ---
 
+## 5.1 数据库访问方式
+
+> 以下为当前开发/部署环境实际的数据库连接信息。
+
+| 项 | 值 |
+|------|------|
+| **数据库地址** | `localhost` (本地 Unix socket) |
+| **端口** | `3306`（默认） |
+| **数据库名** | `oj_db` |
+| **用户名** | `root` |
+| **密码** | （空，使用本地 socket 免密认证） |
+| **字符集** | `utf8mb4` |
+
+**连接命令示例：**
+
+```bash
+# 命令行连接
+mysql -u root oj_db
+
+# 后端代码连接参数 (对应 config/config.yaml)
+#   host: localhost
+#   port: 3306
+#   user: root
+#   password: ""
+#   database: oj_db
+```
+
+**默认管理员账号（已随 init.sql 初始化）：**
+
+| 用户名 | 密码 | 角色 |
+|--------|------|------|
+| `admin` | `admin123` | `admin` |
+
+> 注：`admin123` 为 bcrypt 哈希前的明文，仅用于首次登录，建议登录后尽快修改。
+
+---
+
 ## 6. TODO 清单
 
 ### Phase 1 - 基础设施
-- [ ] 项目目录结构搭建
-- [ ] MySQL 数据库初始化脚本
-- [ ] cpp-httplib 基础 HTTP 服务
-- [ ] 配置管理（日志、数据库连接）
+- [x] 项目目录结构搭建
+- [x] MySQL 数据库初始化脚本
+- [x] cpp-httplib 基础 HTTP 服务
+- [ ] 配置管理
+- [ ] 日志封装
+- [ ] 数据库连接池实现
 
 ### Phase 2 - 题目模块
 - [ ] 题目 CRUD API（管理员）

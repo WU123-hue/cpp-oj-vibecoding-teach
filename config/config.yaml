@@ -1,0 +1,28 @@
+# OJ 系统配置文件
+
+# HTTP 服务器配置
+server:
+  host: "0.0.0.0"
+  port: 8080
+  thread_count: 4
+
+# 数据库配置（对应 SPEC.md 5.1 数据库访问方式）
+database:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  password: ""
+  database: "oj_db"
+  pool_size: 4
+
+# 日志配置
+log:
+  level: "info"            # debug / info / warn / error
+  dir: "logs"
+  filename: "oj.log"
+
+# 代码执行配置（对应验收标准 3: 代码在 <5s 超时限制内执行）
+executor:
+  timeout_sec: 5           # 运行超时（秒）
+  cpu_limit_sec: 2         # CPU 时间限制（秒）
+  mem_limit_mb: 256        # 内存限制（MB）
