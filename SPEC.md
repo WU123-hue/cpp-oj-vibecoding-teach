@@ -215,7 +215,7 @@ mysql -u root oj_db
 - [x] cpp-httplib 基础 HTTP 服务
 - [x] 配置管理
 - [x] 日志封装
-- [ ] 数据库连接池实现
+- [x] 数据库连接池实现
 
 ### Phase 2 - 题目模块
 - [ ] 题目 CRUD API（管理员）
@@ -228,9 +228,6 @@ mysql -u root oj_db
 - [ ] 结果比较（stdout vs expected）
 - [ ] 进程级资源限制（CPU/内存）
 
-### Phase 4 - 前端
-- [ ] 登录/登出页面
-- [ ] 注册页面
 ### Phase 4 - 登录注册模块
 - [ ] 用户注册 API（用户名唯一性校验）
 - [ ] 用户登录 API
