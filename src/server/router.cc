@@ -1,6 +1,7 @@
 #include "router.h"
 
 #include "handler/admin_handler.h"
+#include "handler/auth_handler.h"
 #include "handler/problem_handler.h"
 #include "handler/submit_handler.h"
 
@@ -15,6 +16,9 @@ void RegisterRoutes(httplib::Server& server) {
 
   // 代码提交执行接口
   RegisterSubmitHandlers(server);
+
+  // 认证接口
+  RegisterAuthHandlers(server);
 }
 
 }  // namespace oj

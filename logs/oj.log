@@ -19,3 +19,9 @@
 [2026-07-01 14:33:46] [INFO] execute done: overall=RE passed=0/2 max_ms=251
 [2026-07-01 14:33:46] [INFO] submit: problem_id=73 status=RE passed=0/2
 [2026-07-01 14:33:46] [INFO] problem deleted: id=73
+[2026-07-01 16:07:32] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-01 16:07:32] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-01 16:07:32] [INFO] connection pool init: 4/4 connections established
+[2026-07-01 16:07:32] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-01 16:07:32] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-01 16:07:34] [INFO] user registered: id=25 username=UT_API_testuser

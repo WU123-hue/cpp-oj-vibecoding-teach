@@ -229,8 +229,8 @@ mysql -u root oj_db
 - [x] 进程级资源限制（CPU/内存）
 
 ### Phase 4 - 登录注册模块
-- [ ] Session/Cookie 认证机制
-- [ ] 用户注册 API（用户名唯一性校验）
+- [x] Session/Cookie 认证机制
+- [x] 用户注册 API（用户名唯一性校验）
 - [ ] 用户登录 API
 
 
