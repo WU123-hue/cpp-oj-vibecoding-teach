@@ -1,0 +1,21 @@
+[2026-07-01 14:33:36] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-01 14:33:36] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-01 14:33:37] [INFO] connection pool init: 4/4 connections established
+[2026-07-01 14:33:37] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-01 14:33:37] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-01 14:33:39] [INFO] problem created: id=73 title=UT_A_B
+[2026-07-01 14:33:39] [INFO] execute done: overall=AC passed=2/2 max_ms=13
+[2026-07-01 14:33:39] [INFO] submit: problem_id=73 status=AC passed=2/2
+[2026-07-01 14:33:40] [INFO] execute done: overall=WA passed=0/2 max_ms=11
+[2026-07-01 14:33:40] [INFO] submit: problem_id=73 status=WA passed=0/2
+[2026-07-01 14:33:40] [INFO] compile error: /tmp/oj_exec_pgu4dm/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_pgu4dm/main.cpp:1:13: error: ‘missing’ was not declared in this scope
+    1 | int main(){ missing semicolon }
+      |             ^~~~~~~
+
+[2026-07-01 14:33:40] [INFO] submit: problem_id=73 status=CE passed=0/2
+[2026-07-01 14:33:45] [INFO] execute done: overall=TLE passed=0/2 max_ms=2398
+[2026-07-01 14:33:45] [INFO] submit: problem_id=73 status=TLE passed=0/2
+[2026-07-01 14:33:46] [INFO] execute done: overall=RE passed=0/2 max_ms=251
+[2026-07-01 14:33:46] [INFO] submit: problem_id=73 status=RE passed=0/2
+[2026-07-01 14:33:46] [INFO] problem deleted: id=73

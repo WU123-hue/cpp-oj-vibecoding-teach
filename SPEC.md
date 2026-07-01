@@ -220,13 +220,13 @@ mysql -u root oj_db
 ### Phase 2 - 题目模块
 - [x] 题目数据模型映射
 - [x] 题目 CRUD API（管理员）
-- [ ] 题目列表/详情 API（用户）
+- [x] 题目列表/详情 API（用户）
 
 ### Phase 3 - 代码执行模块
-- [ ] C++ 代码编译（fork + g++）
-- [ ] 代码运行 + 超时控制
-- [ ] 结果比较（stdout vs expected）
-- [ ] 进程级资源限制（CPU/内存）
+- [x] C++ 代码编译（fork + g++）
+- [x] 代码运行 + 超时控制
+- [x] 结果比较（stdout vs expected）
+- [x] 进程级资源限制（CPU/内存）
 
 ### Phase 4 - 登录注册模块
 - [ ] 用户注册 API（用户名唯一性校验）
