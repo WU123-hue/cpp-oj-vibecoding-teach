@@ -219,7 +219,7 @@ mysql -u root oj_db
 
 ### Phase 2 - 题目模块
 - [x] 题目数据模型映射
-- [ ] 题目 CRUD API（管理员）
+- [x] 题目 CRUD API（管理员）
 - [ ] 题目列表/详情 API（用户）
 
 ### Phase 3 - 代码执行模块
