@@ -167,3 +167,94 @@
 [2026-07-02 12:43:26] [INFO] problem deleted: id=9999999
 [2026-07-02 12:43:26] [INFO] problem deleted: id=83
 [2026-07-02 12:43:26] [INFO] problem deleted: id=84
+[2026-07-02 19:49:04] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 19:49:04] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 19:49:04] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 19:49:04] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 19:49:04] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 19:49:07] [INFO] user registered: id=208 username=testui
+[2026-07-02 19:49:07] [INFO] session created: sid=65c9dd9988ceb16c3c3755646cd2cba4 user=testui role=user
+[2026-07-02 19:49:07] [INFO] user logged in: id=208 username=testui role=user
+[2026-07-02 19:49:07] [INFO] session created: sid=a108c86c2bd6cbf143f4349db6efcb8c user=admin role=admin
+[2026-07-02 19:49:07] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-02 20:00:19] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:00:19] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:00:19] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:00:19] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:00:19] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 20:14:42] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:14:42] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:14:42] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:14:42] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:14:42] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 20:14:44] [INFO] problem created: id=85 title=A+B Problem
+[2026-07-02 20:14:44] [INFO] session created: sid=7454fccaafba8c26e71b3f731ae2a987 user=admin role=admin
+[2026-07-02 20:14:44] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-02 20:18:11] [INFO] session created: sid=0981639ea7e368ecaf123029509b1648 user=admin role=admin
+[2026-07-02 20:18:11] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-02 20:27:07] [INFO] session created: sid=3ffa9b90de815ae14abf37af821a6739 user=admin role=admin
+[2026-07-02 20:27:07] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-02 20:34:36] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:34:36] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:34:36] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:34:36] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:34:36] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 20:40:28] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:40:28] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:40:28] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:40:28] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:40:28] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 20:40:54] [INFO] session created: sid=d592ffe2f5d51d2caab162f8e03190bb user=admin role=admin
+[2026-07-02 20:40:54] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-02 20:47:51] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:47:51] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:47:51] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:47:51] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:47:51] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 20:47:53] [INFO] problem created: id=86 title=A+B Problem
+[2026-07-02 20:47:55] [INFO] execute done: overall=AC passed=2/2 max_ms=12
+[2026-07-02 20:47:55] [INFO] submit: problem_id=86 status=AC passed=2/2
+[2026-07-02 20:47:56] [INFO] execute done: overall=WA passed=0/2 max_ms=11
+[2026-07-02 20:47:56] [INFO] submit: problem_id=86 status=WA passed=0/2
+[2026-07-02 20:47:56] [INFO] compile error: /tmp/oj_exec_wkfFSs/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_wkfFSs/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 20:47:56] [INFO] submit: problem_id=86 status=CE passed=0/2
+[2026-07-02 20:56:43] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 20:56:43] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 20:56:43] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 20:56:43] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 20:56:43] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:04:43] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:04:43] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:04:43] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:04:43] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:04:43] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:15:24] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:15:24] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:15:24] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:15:24] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:15:24] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:15:26] [INFO] problem created: id=87 title=Admin Test
+[2026-07-02 21:19:36] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:19:36] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:19:36] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:19:36] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:19:36] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:33:05] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:33:05] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:33:05] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:33:05] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:33:05] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:39:44] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:39:44] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:39:44] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:39:44] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:39:44] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 21:46:59] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 21:46:59] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 21:46:59] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 21:46:59] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 21:46:59] [INFO] HTTP server starting on 0.0.0.0:8080

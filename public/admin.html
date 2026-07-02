@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJ — 管理后台</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2322C55E'/><text x='50' y='68' font-size='56' font-weight='bold' text-anchor='middle' fill='%23020617' font-family='monospace'>&lt;/&gt;</text></svg>">
+</head>
+<body>
+
+  <!-- 背景效果 -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--green"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__left">
+      <a href="/index.html" class="navbar__logo-link">
+        <div class="navbar__logo">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l-5-5 5-5M14 4l5 5-5 5" />
+          </svg>
+        </div>
+        <span class="navbar__title">OJ</span>
+      </a>
+    </div>
+
+    <div class="navbar__right">
+      <a href="/index.html" class="admin-link">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        题目列表
+      </a>
+
+      <div class="navbar__user" id="userInfo">
+        <span id="userBadge" class="navbar__badge">admin</span>
+        <span id="userAvatar" class="navbar__user-avatar">A</span>
+        <span id="userName">admin</span>
+      </div>
+
+      <a href="#" id="logoutLink" class="navbar__link">退出</a>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="page-container" style="max-width: 1280px;">
+
+    <!-- 返回链接 -->
+      <a href="/problem_list.html" class="back-link">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      返回题目列表
+    </a>
+
+    <!-- 左右分栏 -->
+    <div class="admin-split">
+
+      <!-- 左侧：新增题目 -->
+      <div class="admin-split__left">
+        <h2 class="section-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          新增题目
+        </h2>
+
+        <div class="form-card">
+          <form id="problemForm" autocomplete="off">
+
+            <div class="form-group">
+              <label class="form-label" for="title">题目标题</label>
+              <input type="text" id="title" name="title" class="form-input"
+                     placeholder="例如：A+B Problem" required maxlength="255">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="difficulty">难度</label>
+              <select id="difficulty" name="difficulty" class="form-select">
+                <option value="Easy">简单</option>
+                <option value="Medium">中等</option>
+                <option value="Hard">困难</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="content">题目描述</label>
+              <textarea id="content" name="content" class="form-textarea"
+                        placeholder="输入题目描述（支持纯文本）..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="template">代码模板（可选）</label>
+              <textarea id="template" name="template" class="form-textarea"
+                        placeholder="#include <iostream>..." style="min-height:80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">测试用例</label>
+              <div id="testcaseEditor" class="testcase-editor">
+                <!-- JS 动态渲染 -->
+              </div>
+              <button type="button" id="addTcBtn" class="btn-add-tc" style="margin-top:0.75rem;">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                添加测试用例
+              </button>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" id="submitBtn" class="btn btn--primary">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                创建题目
+              </button>
+              <button type="button" class="btn btn--ghost" onclick="document.getElementById('problemForm').reset(); document.getElementById('testcaseEditor').innerHTML=''; "
+                style="width:auto;padding:0 1.5rem;">重置</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- 右侧：题目管理 -->
+      <div class="admin-split__right">
+        <h2 class="section-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          题目管理
+        </h2>
+
+        <div class="admin-table">
+          <div id="adminTableHead" class="admin-table__head">
+            <span>ID</span>
+            <span>标题</span>
+            <span>难度</span>
+            <span>创建日期</span>
+            <span style="text-align:right;">操作</span>
+          </div>
+
+          <div id="adminTableBody">
+            <!-- JS 动态渲染 -->
+          </div>
+
+          <div id="adminEmpty" class="empty-state" style="display:none;">
+            <div class="empty-state__icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p class="empty-state__text">暂无题目</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Toast 提示 -->
+  <div id="toast" class="toast"></div>
+
+  <!-- 确认删除对话框 -->
+  <div id="confirmDialog" class="dialog-overlay">
+    <div class="dialog">
+      <div class="dialog__icon">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="dialog__title">确认删除</h3>
+      <p class="dialog__text">删除后不可恢复，确定要删除这道题目吗？</p>
+      <div class="dialog__actions">
+        <button type="button" id="dialogCancel" class="btn btn--ghost">取消</button>
+        <button type="button" id="dialogConfirm" class="btn btn--danger">删除</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+
+</body>
+</html>

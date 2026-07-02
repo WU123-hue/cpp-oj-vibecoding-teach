@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJ — 题目详情</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2322C55E'/><text x='50' y='68' font-size='56' font-weight='bold' text-anchor='middle' fill='%23020617' font-family='monospace'>&lt;/&gt;</text></svg>">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.js"></script>
+</head>
+<body>
+
+  <!-- 背景效果 -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--green"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__left">
+      <a href="/index.html" class="navbar__logo-link">
+        <div class="navbar__logo">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l-5-5 5-5M14 4l5 5-5 5" />
+          </svg>
+        </div>
+        <span class="navbar__title">OJ</span>
+      </a>
+    </div>
+
+    <div class="navbar__right">
+      <a href="/admin.html" id="adminLink" class="admin-link" style="display:none;">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        管理后台
+      </a>
+
+      <div class="navbar__user" id="userInfo">
+        <span id="userBadge" class="navbar__badge" style="display:none;">admin</span>
+        <span id="userAvatar" class="navbar__user-avatar">U</span>
+        <span id="userName">用户</span>
+      </div>
+
+      <a href="#" id="logoutLink" class="navbar__link">退出</a>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="detail-container">
+
+    <!-- 返回链接 -->
+      <a href="/problem_list.html" class="back-link">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      返回题目列表
+    </a>
+
+    <!-- 题目头部 -->
+    <div class="detail-header">
+      <div class="detail-header__left">
+        <span id="problemId" class="detail-header__id">#0</span>
+        <h1 id="problemTitle" class="detail-header__title">加载中...</h1>
+      </div>
+      <span id="problemDifficulty" class="problem-row__difficulty difficulty--easy">简单</span>
+    </div>
+
+    <!-- 左右分栏 -->
+    <div class="detail-split">
+
+      <!-- 左侧：题目描述 -->
+      <div class="panel">
+        <div class="panel__header">
+          <span class="panel__title">题目描述</span>
+        </div>
+        <div class="panel__body">
+          <div id="detailContent" class="problem-content">加载中...</div>
+          <div class="problem-meta">
+            <div class="problem-meta__item">
+              <span class="problem-meta__label">创建时间</span>
+              <span id="metaTime" class="problem-meta__value">-</span>
+            </div>
+            <div class="problem-meta__item">
+              <span class="problem-meta__label">测试用例</span>
+              <span id="metaCases" class="problem-meta__value">-</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：代码编辑器 -->
+      <div class="panel" style="display:flex;flex-direction:column;">
+        <div class="panel__header">
+          <span class="panel__title">代码编辑器</span>
+          <span style="font-family:var(--font-mono);font-size:0.6875rem;color:var(--text-muted);">C++17</span>
+        </div>
+        <div class="editor-wrapper">
+          <div id="editor"></div>
+          <!-- 提交加载遮罩 -->
+          <div id="submitOverlay" class="submit-overlay">
+            <div class="submit-overlay__spinner"></div>
+            <div class="submit-overlay__text">编译运行中...</div>
+          </div>
+        </div>
+        <div class="submit-bar">
+          <span class="submit-bar__hint">
+            <kbd>Ctrl</kbd> + <kbd>Enter</kbd> 快速提交
+          </span>
+          <button id="submitBtn" class="btn btn--primary btn--submit">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            提交运行
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 提交结果 -->
+    <div id="resultPanel" class="panel result-panel">
+      <div class="panel__header">
+        <span class="panel__title">运行结果</span>
+      </div>
+
+      <!-- 结果摘要 -->
+      <div class="result-summary">
+        <div id="resultStatusIcon" style="display:flex;align-items:center;"></div>
+        <div id="resultStatus" class="result-status result-status--re">
+          <span>-</span>
+        </div>
+        <div id="resultStats" class="result-stats"></div>
+      </div>
+
+      <!-- 编译错误输出 -->
+      <pre id="compileOutput" class="compile-output" style="display:none;"></pre>
+
+      <!-- 测试用例结果 -->
+      <div id="testcaseList" class="testcase-list" style="display:none;"></div>
+    </div>
+
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/problem_detail.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJ — 在线判题系统</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2322C55E'/><text x='50' y='68' font-size='56' font-weight='bold' text-anchor='middle' fill='%23020617' font-family='monospace'>&lt;/&gt;</text></svg>">
+</head>
+<body>
+
+  <!-- 背景效果 -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--green"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- 顶部导航 -->
+  <nav class="hero-nav">
+    <a href="/index.html" class="hero-nav__brand">
+      <div class="navbar__logo">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l-5-5 5-5M14 4l5 5-5 5" />
+        </svg>
+      </div>
+      <span class="navbar__title">OJ</span>
+    </a>
+
+    <div class="hero-nav__actions">
+      <!-- 已登录时显示 -->
+      <div id="loggedInActions" style="display:none;align-items:center;gap:0.75rem;">
+        <span id="welcomeUser" style="font-size:0.8125rem;color:var(--text-secondary);">你好，<span id="heroUserName" style="color:var(--text-primary);font-weight:500;"></span></span>
+        <a href="/problem_list.html" class="btn btn--primary btn--lg" style="height:38px;padding:0 1.25rem;font-size:0.875rem;">
+          进入刷题
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7-7 7M3 12h18" />
+          </svg>
+        </a>
+      </div>
+      <!-- 未登录时显示 -->
+      <div id="loggedOutActions" style="display:flex;align-items:center;gap:0.75rem;">
+        <a href="/login.html" class="btn btn--ghost btn--lg" style="height:38px;padding:0 1.25rem;font-size:0.875rem;">登录</a>
+        <a href="/register.html" class="btn btn--primary btn--lg" style="height:38px;padding:0 1.25rem;font-size:0.875rem;">注册</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 区域 -->
+  <section class="hero">
+    <div class="hero__badge">
+      <span class="hero__badge-dot"></span>
+      C++ 在线判题系统
+    </div>
+
+    <h1 class="hero__title">
+      在线代码判题<br>
+      <span class="hero__title-accent">实时编译运行</span>
+    </h1>
+
+    <p class="hero__subtitle">
+      编写 C++ 代码，提交后即时编译运行，自动判定 AC / WA / TLE / RE。
+      适合教学训练与算法练习。
+    </p>
+
+    <div class="hero__actions">
+      <a href="/problem_list.html" class="btn btn--primary btn--lg">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        浏览题目
+      </a>
+      <a href="/register.html" class="btn btn--outline btn--lg">
+        注册账号
+      </a>
+    </div>
+
+    <!-- 统计数据 -->
+    <div class="hero__stats">
+      <div class="stat">
+        <div id="statProblems" class="stat__value stat__value--accent">0</div>
+        <div class="stat__label">题目数量</div>
+      </div>
+      <div class="stat">
+        <div class="stat__value">C++17</div>
+        <div class="stat__label">编译标准</div>
+      </div>
+      <div class="stat">
+        <div class="stat__value">5s</div>
+        <div class="stat__label">超时限制</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 功能特性 -->
+  <section class="features">
+    <div class="features__grid">
+
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l-5-5 5-5M14 4l5 5-5 5" />
+          </svg>
+        </div>
+        <h3 class="feature-card__title">在线代码编辑</h3>
+        <p class="feature-card__desc">内置 Ace 代码编辑器，支持 C++ 语法高亮、自动补全，随时随地编写代码。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h3 class="feature-card__title">实时编译运行</h3>
+        <p class="feature-card__desc">提交代码后自动编译执行，逐个测试用例验证结果，毫秒级返回判定。</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 class="feature-card__title">自动判题</h3>
+        <p class="feature-card__desc">准确判定 AC / WA / CE / TLE / RE 五种状态，含 CPU 与内存资源限制。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 代码预览 -->
+  <section class="code-preview">
+    <div class="code-preview__window">
+      <div class="code-preview__bar">
+        <span class="code-preview__dot code-preview__dot--red"></span>
+        <span class="code-preview__dot code-preview__dot--yellow"></span>
+        <span class="code-preview__dot code-preview__dot--green"></span>
+        <span class="code-preview__filename">main.cpp</span>
+      </div>
+      <pre class="code-preview__code"><span class="cmt">// A+B Problem</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> a, b;
+    cin &gt;&gt; a &gt;&gt; b;
+    cout &lt;&lt; a + b &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+<span class="cmt">// Status: AC  Passed: 2/2  Time: 11ms</span></pre>
+    </div>
+  </section>
+
+  <!-- 工作流程 -->
+  <section class="section">
+    <div class="section__header">
+      <div class="section__label">使用流程</div>
+      <h2 class="section__title">三步完成刷题</h2>
+      <p class="section__subtitle">从浏览题目到获取结果，整个流程简单高效，无需安装任何环境。</p>
+    </div>
+
+    <div class="workflow">
+      <div class="workflow__step">
+        <div class="workflow__num">1</div>
+        <div class="workflow__content">
+          <h3 class="workflow__title">选择题目</h3>
+          <p class="workflow__desc">浏览题目列表，按难度筛选适合自己的题目（简单 / 中等 / 困难），点击进入详情页查看题目描述与输入输出要求。</p>
+        </div>
+      </div>
+
+      <div class="workflow__step">
+        <div class="workflow__num">2</div>
+        <div class="workflow__content">
+          <h3 class="workflow__title">编写代码</h3>
+          <p class="workflow__desc">在内置的 Ace 代码编辑器中编写 C++ 代码，支持语法高亮、自动补全和代码模板预填充。使用 Ctrl+Enter 快速提交。</p>
+        </div>
+      </div>
+
+      <div class="workflow__step">
+        <div class="workflow__num">3</div>
+        <div class="workflow__content">
+          <h3 class="workflow__title">获取结果</h3>
+          <p class="workflow__desc">提交后系统自动编译运行，逐个测试用例判定结果。实时显示每个用例的状态、耗时和实际输出，无需刷新页面。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 判题状态说明 -->
+  <section class="section">
+    <div class="section__header">
+      <div class="section__label">判题状态</div>
+      <h2 class="section__title">判题状态说明</h2>
+      <p class="section__subtitle">系统自动判定五种运行状态，帮助你快速定位问题。</p>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="status-card__badge status-card__badge--ac">AC</div>
+        <div class="status-card__name">答案正确</div>
+        <div class="status-card__desc">全部测试用例通过</div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card__badge status-card__badge--wa">WA</div>
+        <div class="status-card__name">答案错误</div>
+        <div class="status-card__desc">输出结果与期望不符</div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card__badge status-card__badge--ce">CE</div>
+        <div class="status-card__name">编译错误</div>
+        <div class="status-card__desc">代码编译失败</div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card__badge status-card__badge--tle">TLE</div>
+        <div class="status-card__name">运行超时</div>
+        <div class="status-card__desc">运行超过5秒限制</div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card__badge status-card__badge--re">RE</div>
+        <div class="status-card__name">运行错误</div>
+        <div class="status-card__desc">段错误、除零等异常</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 适用场景 -->
+  <section class="section">
+    <div class="section__header">
+      <div class="section__label">适用场景</div>
+      <h2 class="section__title">适用场景</h2>
+      <p class="section__subtitle">无论是课堂教学还是自学练习，都能满足需求。</p>
+    </div>
+
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <div class="usecase-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="usecase-card__title">课堂教学</h3>
+          <p class="usecase-card__desc">教师通过管理后台导入题目，学生在线提交代码并获得即时反馈，适合 C++ 编程课程的上机练习与作业评测。</p>
+        </div>
+      </div>
+
+      <div class="usecase-card">
+        <div class="usecase-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="usecase-card__title">自学练习</h3>
+          <p class="usecase-card__desc">注册账号后自由刷题，按难度分级训练算法思维，通过测试用例反馈快速发现并修正代码错误。</p>
+        </div>
+      </div>
+
+      <div class="usecase-card">
+        <div class="usecase-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="usecase-card__title">算法竞赛</h3>
+          <p class="usecase-card__desc">支持 5 秒超时限制与 CPU / 内存资源限制，模拟竞赛环境，适合赛前集训与算法能力提升。</p>
+        </div>
+      </div>
+
+      <div class="usecase-card">
+        <div class="usecase-card__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="usecase-card__title">面试准备</h3>
+          <p class="usecase-card__desc">涵盖基础到进阶难度的题目，帮助巩固 C++ 编程基础，为技术面试中的手写代码环节做好充分准备。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer__text">OJ System &mdash; C++ 在线判题系统 &middot; <a href="/problem_list.html">题目列表</a> &middot; <a href="/login.html">登录</a> &middot; <a href="/register.html">注册</a></p>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/landing.js"></script>
+
+</body>
+</html>

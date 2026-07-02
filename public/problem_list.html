@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OJ — 题目列表</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2322C55E'/><text x='50' y='68' font-size='56' font-weight='bold' text-anchor='middle' fill='%23020617' font-family='monospace'>&lt;/&gt;</text></svg>">
+</head>
+<body>
+
+  <!-- 背景效果 -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--green"></div>
+  <div class="bg-glow bg-glow--blue"></div>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__left">
+      <a href="/index.html" class="navbar__logo-link">
+        <div class="navbar__logo">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l-5-5 5-5M14 4l5 5-5 5" />
+          </svg>
+        </div>
+        <span class="navbar__title">OJ</span>
+      </a>
+    </div>
+
+    <div class="navbar__right">
+      <a href="/admin.html" id="adminLink" class="admin-link">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        管理后台
+      </a>
+
+      <div class="navbar__user" id="userInfo">
+        <span id="userBadge" class="navbar__badge">admin</span>
+        <span id="userAvatar" class="navbar__user-avatar">U</span>
+        <span id="userName">用户</span>
+      </div>
+
+      <a href="#" id="logoutLink" class="navbar__link">退出</a>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="page-container">
+
+    <!-- 返回首页 -->
+    <a href="/index.html" class="back-link">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      返回首页
+    </a>
+
+    <!-- 页头 -->
+    <div class="page-header">
+      <h1 class="page-header__title">题目列表</h1>
+      <div id="problemCount" class="page-header__count">
+        共 <span>0</span> 题
+      </div>
+    </div>
+
+    <!-- 难度筛选 -->
+    <div class="filter-bar">
+      <button class="filter-tab filter-tab--active" data-filter="all">全部</button>
+      <button class="filter-tab" data-filter="Easy">
+        <span class="difficulty-dot difficulty-dot--easy"></span>简单
+      </button>
+      <button class="filter-tab" data-filter="Medium">
+        <span class="difficulty-dot difficulty-dot--medium"></span>中等
+      </button>
+      <button class="filter-tab" data-filter="Hard">
+        <span class="difficulty-dot difficulty-dot--hard"></span>困难
+      </button>
+    </div>
+
+    <!-- 题目表格 -->
+    <div class="problem-table">
+      <div id="problemTableHead" class="problem-table__head">
+        <span>#</span>
+        <span>题目标题</span>
+        <span>难度</span>
+        <span style="text-align:right;">操作</span>
+      </div>
+
+      <div id="problemTableBody" class="problem-table__body">
+        <!-- JS 动态渲染 -->
+      </div>
+
+      <!-- 空状态 -->
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-state__icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <p class="empty-state__text">暂无题目，请联系管理员添加</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/problem.js"></script>
+
+</body>
+</html>
