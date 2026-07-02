@@ -7,6 +7,7 @@
 
 #include "db/connection_pool.h"
 #include "handler/auth_handler.h"
+#include "service/session_manager.h"
 #include "utils/httplib.h"
 #include "utils/logger.h"
 
@@ -83,6 +84,18 @@ class AuthApiTest : public ::testing::Test {
                                const std::string& password) {
     json body = {{"username", username}, {"password", password}};
     cli_->Post("/api/register", body.dump(), "application/json");
+  }
+
+  // 辅助：登录并返回 session_id
+  static std::string LoginAndGetSid(const std::string& username,
+                                    const std::string& password) {
+    json body = {{"username", username}, {"password", password}};
+    auto res = cli_->Post("/api/login", body.dump(), "application/json");
+    if (!res || res->status != 200) return "";
+    std::string cookie = res->get_header_value("Set-Cookie");
+    size_t eq = cookie.find('=');
+    size_t semi = cookie.find(';');
+    return cookie.substr(eq + 1, semi - eq - 1);
   }
 };
 
@@ -787,4 +800,288 @@ TEST_F(AuthApiTest, FullRegisterLoginLogoutFlow) {
   auto login2_res = cli_->Post("/api/login", login_body.dump(), "application/json");
   ASSERT_TRUE(login2_res);
   ASSERT_EQ(login2_res->status, 200);
+}
+
+// =============================================================================
+// ===== Logout 扩展测试 =====
+// =============================================================================
+
+// =============================================================================
+// POST /api/logout — 登出后 session 在 SessionManager 中已销毁
+// =============================================================================
+TEST_F(AuthApiTest, LogoutDestroysSessionInManager) {
+  RegisterTestUser("UT_APIAUTH_destroysession", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_destroysession", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  // 确认 session 在 SessionManager 中存在
+  EXPECT_NE(oj::SessionManager::Instance().GetSession(sid), nullptr);
+
+  // 登出
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  // 登出后 session 在 SessionManager 中已不存在
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(sid), nullptr);
+}
+
+// =============================================================================
+// POST /api/logout — 重复登出同一 session 返回 200
+// =============================================================================
+TEST_F(AuthApiTest, LogoutTwiceSameSession) {
+  RegisterTestUser("UT_APIAUTH_logouttwice", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_logouttwice", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+
+  // 第一次登出
+  auto res1 = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res1);
+  EXPECT_EQ(res1->status, 200);
+  EXPECT_EQ(json::parse(res1->body)["message"], "logged out");
+
+  // 第二次登出同一 session（已销毁）
+  auto res2 = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res2);
+  EXPECT_EQ(res2->status, 200);
+  EXPECT_EQ(json::parse(res2->body)["message"], "logged out");
+}
+
+// =============================================================================
+// POST /api/logout — 登出不影响其他用户的 session
+// =============================================================================
+TEST_F(AuthApiTest, LogoutDoesNotAffectOtherSessions) {
+  RegisterTestUser("UT_APIAUTH_userA", "pass123456");
+  RegisterTestUser("UT_APIAUTH_userB", "pass123456");
+
+  std::string sid_a = LoginAndGetSid("UT_APIAUTH_userA", "pass123456");
+  std::string sid_b = LoginAndGetSid("UT_APIAUTH_userB", "pass123456");
+  ASSERT_FALSE(sid_a.empty());
+  ASSERT_FALSE(sid_b.empty());
+  EXPECT_NE(sid_a, sid_b);
+
+  // 用户 A 登出
+  httplib::Headers headers_a = {{"Cookie", "oj_session=" + sid_a}};
+  auto res = cli_->Post("/api/logout", headers_a, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+
+  // 用户 A 的 session 已销毁
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(sid_a), nullptr);
+  // 用户 B 的 session 仍有效
+  EXPECT_NE(oj::SessionManager::Instance().GetSession(sid_b), nullptr);
+
+  // 用户 B 仍可正常登出
+  httplib::Headers headers_b = {{"Cookie", "oj_session=" + sid_b}};
+  auto res2 = cli_->Post("/api/logout", headers_b, "", "application/json");
+  ASSERT_TRUE(res2);
+  EXPECT_EQ(res2->status, 200);
+}
+
+// =============================================================================
+// POST /api/logout — 空 Cookie 值登出返回 200
+// =============================================================================
+TEST_F(AuthApiTest, LogoutEmptyCookieValue) {
+  httplib::Headers headers = {{"Cookie", "oj_session="}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+}
+
+// =============================================================================
+// POST /api/logout — Cookie 中有其他键值对不影响登出
+// =============================================================================
+TEST_F(AuthApiTest, LogoutWithMultipleCookies) {
+  RegisterTestUser("UT_APIAUTH_multicookie", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_multicookie", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  // Cookie 中包含其他键值对 + oj_session
+  std::string cookie_val = "other=val1; oj_session=" + sid + "; foo=bar";
+  httplib::Headers headers = {{"Cookie", cookie_val}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+
+  // session 应已销毁
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(sid), nullptr);
+}
+
+// =============================================================================
+// POST /api/logout — Cookie 中不含 oj_session 返回 200
+// =============================================================================
+TEST_F(AuthApiTest, LogoutCookieWithoutSessionName) {
+  httplib::Headers headers = {{"Cookie", "foo=bar; other=value"}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+}
+
+// =============================================================================
+// POST /api/logout — 响应 Content-Type 为 application/json
+// =============================================================================
+TEST_F(AuthApiTest, LogoutResponseContentType) {
+  auto res = cli_->Post("/api/logout", "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  auto ct = res->get_header_value("Content-Type");
+  EXPECT_NE(ct.find("application/json"), std::string::npos);
+}
+
+// =============================================================================
+// POST /api/logout — 响应体结构 {code, message}
+// =============================================================================
+TEST_F(AuthApiTest, LogoutResponseStructure) {
+  auto res = cli_->Post("/api/logout", "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  json resp = json::parse(res->body);
+  EXPECT_TRUE(resp.contains("code"));
+  EXPECT_TRUE(resp.contains("message"));
+  EXPECT_EQ(resp["code"], 200);
+  EXPECT_EQ(resp["message"], "logged out");
+  // logout 响应不应包含 data
+  EXPECT_FALSE(resp.contains("data"));
+}
+
+// =============================================================================
+// POST /api/logout — 登出后 Set-Cookie 包含 HttpOnly
+// =============================================================================
+TEST_F(AuthApiTest, LogoutCookieContainsHttpOnly) {
+  RegisterTestUser("UT_APIAUTH_httpOnly", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_httpOnly", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  auto cookie = res->get_header_value("Set-Cookie");
+  EXPECT_NE(cookie.find("HttpOnly"), std::string::npos);
+  EXPECT_NE(cookie.find("Path=/"), std::string::npos);
+}
+
+// =============================================================================
+// POST /api/logout — 登出后 Set-Cookie 的 oj_session 值为空
+// =============================================================================
+TEST_F(AuthApiTest, LogoutCookieSessionValueEmpty) {
+  RegisterTestUser("UT_APIAUTH_emptyval", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_emptyval", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  auto cookie = res->get_header_value("Set-Cookie");
+  // 应包含 oj_session= 后紧跟 ; 或空
+  size_t pos = cookie.find("oj_session=");
+  ASSERT_NE(pos, std::string::npos);
+  pos += std::string("oj_session=").size();
+  // 紧接的字符应为 ; （值为空）
+  ASSERT_LT(pos, cookie.size());
+  EXPECT_EQ(cookie[pos], ';');
+}
+
+// =============================================================================
+// POST /api/logout — 带 body 登出仍返回 200（忽略 body）
+// =============================================================================
+TEST_F(AuthApiTest, LogoutIgnoresBody) {
+  auto res = cli_->Post("/api/logout", "{\"foo\":\"bar\"}", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+}
+
+// =============================================================================
+// POST /api/logout — 管理员用户登出
+// =============================================================================
+TEST_F(AuthApiTest, LogoutAdminUser) {
+  std::string sid = LoginAndGetSid("admin", "admin123");
+  ASSERT_FALSE(sid.empty());
+
+  // 确认 session 存在
+  const oj::Session* s = oj::SessionManager::Instance().GetSession(sid);
+  ASSERT_NE(s, nullptr);
+  EXPECT_EQ(s->role, "admin");
+
+  // 登出
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+
+  // session 已销毁
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(sid), nullptr);
+}
+
+// =============================================================================
+// POST /api/logout — 登出后用旧 session 再次登出仍返回 200
+// =============================================================================
+TEST_F(AuthApiTest, LogoutAfterSessionAlreadyDestroyed) {
+  RegisterTestUser("UT_APIAUTH_alreadyDestroyed", "pass123456");
+  std::string sid = LoginAndGetSid("UT_APIAUTH_alreadyDestroyed", "pass123456");
+  ASSERT_FALSE(sid.empty());
+
+  // 先手动通过 SessionManager 销毁
+  oj::SessionManager::Instance().DestroySession(sid);
+
+  // 再调 logout — 应仍返回 200
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid}};
+  auto res = cli_->Post("/api/logout", headers, "", "application/json");
+  ASSERT_TRUE(res);
+  EXPECT_EQ(res->status, 200);
+  EXPECT_EQ(json::parse(res->body)["message"], "logged out");
+}
+
+// =============================================================================
+// POST /api/logout — 登出后 Set-Cookie 包含 Path=/
+// =============================================================================
+TEST_F(AuthApiTest, LogoutCookieContainsPath) {
+  auto res = cli_->Post("/api/logout", "", "application/json");
+  ASSERT_TRUE(res);
+  ASSERT_EQ(res->status, 200);
+
+  auto cookie = res->get_header_value("Set-Cookie");
+  EXPECT_NE(cookie.find("Path=/"), std::string::npos);
+}
+
+// =============================================================================
+// POST /api/logout — 登出后重新登录获取新 session
+// =============================================================================
+TEST_F(AuthApiTest, LogoutThenReloginNewSession) {
+  RegisterTestUser("UT_APIAUTH_relogin", "pass123456");
+
+  // 第一次登录
+  std::string sid1 = LoginAndGetSid("UT_APIAUTH_relogin", "pass123456");
+  ASSERT_FALSE(sid1.empty());
+
+  // 登出
+  httplib::Headers headers = {{"Cookie", "oj_session=" + sid1}};
+  cli_->Post("/api/logout", headers, "", "application/json");
+
+  // 旧 session 已无效
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(sid1), nullptr);
+
+  // 重新登录获取新 session
+  std::string sid2 = LoginAndGetSid("UT_APIAUTH_relogin", "pass123456");
+  ASSERT_FALSE(sid2.empty());
+  EXPECT_NE(sid1, sid2);
+
+  // 新 session 有效
+  EXPECT_NE(oj::SessionManager::Instance().GetSession(sid2), nullptr);
+
+  // 清理
+  oj::SessionManager::Instance().DestroySession(sid2);
 }

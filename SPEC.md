@@ -232,6 +232,7 @@ mysql -u root oj_db
 - [x] Session/Cookie 认证机制
 - [x] 用户注册 API（用户名唯一性校验）
 - [x] 用户登录 API
+- [x] 用户退出登录 
 
 
 ### Phase 5 - 前端
