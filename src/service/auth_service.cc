@@ -10,6 +10,7 @@
 
 #include "db/connection_pool.h"
 #include "model/user.h"
+#include "service/session_manager.h"
 #include "utils/logger.h"
 
 namespace oj {
@@ -165,6 +166,61 @@ bool AuthService::Register(const RegisterRequest& req, int* new_id,
   if (new_id) *new_id = user.id();
   LOG_INFO_FMT("user registered: id=%d username=%s", user.id(),
                req.username.c_str());
+  return true;
+}
+
+// =============================================================================
+// 用户登录
+// =============================================================================
+bool AuthService::Login(const LoginRequest& req, LoginResult* result,
+                        std::string* reason) {
+  if (req.username.empty()) {
+    if (reason) *reason = "username is required";
+    return false;
+  }
+  if (req.password.empty()) {
+    if (reason) *reason = "password is required";
+    return false;
+  }
+
+  // 按 username 查询用户
+  ConnectionGuard g;
+  if (!g.Valid()) {
+    if (reason) *reason = "database connection unavailable";
+    return false;
+  }
+
+  User user;
+  if (!user.LoadFromDBByUsername(g.Get(), req.username)) {
+    if (reason) *reason = "invalid username or password";
+    return false;
+  }
+
+  // 验证密码
+  if (!VerifyPassword(req.password, user.password())) {
+    if (reason) *reason = "invalid username or password";
+    return false;
+  }
+
+  // 创建会话
+  std::string role = RoleToStr(user.role());
+  std::string sid = SessionManager::Instance().CreateSession(
+      user.id(), user.username(), role);
+
+  if (sid.empty()) {
+    if (reason) *reason = "session creation failed";
+    return false;
+  }
+
+  if (result) {
+    result->session_id = sid;
+    result->user_id    = user.id();
+    result->username   = user.username();
+    result->role       = role;
+  }
+
+  LOG_INFO_FMT("user logged in: id=%d username=%s role=%s",
+               user.id(), user.username().c_str(), role.c_str());
   return true;
 }
 

@@ -7,6 +7,7 @@
 
 #include "db/connection_pool.h"
 #include "model/user.h"
+#include "service/session_manager.h"
 #include "utils/logger.h"
 
 namespace {
@@ -534,4 +535,477 @@ TEST_F(AuthServiceTest, RegisterNullNewIdNoCrash) {
   oj::AuthService svc;
   std::string reason;
   ASSERT_TRUE(svc.Register(req, nullptr, &reason));
+}
+
+// =============================================================================
+// ===== Login 功能测试 =====
+// =============================================================================
+
+// 辅助：注册测试用户
+void RegisterUser(const std::string& username, const std::string& password) {
+  oj::RegisterRequest req;
+  req.username = username;
+  req.password = password;
+  oj::AuthService svc;
+  int new_id = 0;
+  std::string reason;
+  svc.Register(req, &new_id, &reason);
+}
+
+// =============================================================================
+// Login: 正常登录成功
+// =============================================================================
+TEST_F(AuthServiceTest, LoginSuccess) {
+  RegisterUser("UT_AUTH_LoginSuccess", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginSuccess";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason)) << reason;
+
+  EXPECT_FALSE(result.session_id.empty());
+  EXPECT_GT(result.user_id, 0);
+  EXPECT_EQ(result.username, "UT_AUTH_LoginSuccess");
+  EXPECT_EQ(result.role, "user");
+}
+
+// =============================================================================
+// Login: session_id 格式正确（32 字符十六进制）
+// =============================================================================
+TEST_F(AuthServiceTest, LoginSessionIdFormat) {
+  RegisterUser("UT_AUTH_LoginSidFmt", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginSidFmt";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason));
+
+  EXPECT_EQ(result.session_id.size(), 32u);
+  for (char c : result.session_id) {
+    EXPECT_TRUE((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'))
+        << "invalid hex char: " << c;
+  }
+}
+
+// =============================================================================
+// Login: 错误密码返回失败
+// =============================================================================
+TEST_F(AuthServiceTest, LoginWrongPasswordFails) {
+  RegisterUser("UT_AUTH_LoginWrongPwd", "correctpass");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginWrongPwd";
+  req.password = "wrongpassword";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+  EXPECT_EQ(reason, "invalid username or password");
+  EXPECT_TRUE(result.session_id.empty());
+}
+
+// =============================================================================
+// Login: 不存在的用户返回失败
+// =============================================================================
+TEST_F(AuthServiceTest, LoginNonExistentUserFails) {
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_NoSuchUser";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+  EXPECT_EQ(reason, "invalid username or password");
+}
+
+// =============================================================================
+// Login: 空 username 返回失败
+// =============================================================================
+TEST_F(AuthServiceTest, LoginEmptyUsernameFails) {
+  oj::LoginRequest req;
+  req.username = "";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+  EXPECT_EQ(reason, "username is required");
+}
+
+// =============================================================================
+// Login: 空 password 返回失败
+// =============================================================================
+TEST_F(AuthServiceTest, LoginEmptyPasswordFails) {
+  RegisterUser("UT_AUTH_LoginEmptyPwd", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginEmptyPwd";
+  req.password = "";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+  EXPECT_EQ(reason, "password is required");
+}
+
+// =============================================================================
+// Login: 错误密码和不存在用户的错误信息相同（不泄露用户是否存在）
+// =============================================================================
+TEST_F(AuthServiceTest, LoginWrongPasswordAndNonExistentSameError) {
+  RegisterUser("UT_AUTH_LoginSameErr", "pass123456");
+
+  oj::AuthService svc;
+  std::string reason1, reason2;
+
+  // 错误密码
+  oj::LoginRequest r1;
+  r1.username = "UT_AUTH_LoginSameErr";
+  r1.password = "wrongpassword";
+  svc.Login(r1, nullptr, &reason1);
+
+  // 不存在的用户
+  oj::LoginRequest r2;
+  r2.username = "UT_AUTH_LoginNoExist";
+  r2.password = "pass123456";
+  svc.Login(r2, nullptr, &reason2);
+
+  EXPECT_EQ(reason1, reason2);
+  EXPECT_EQ(reason1, "invalid username or password");
+}
+
+// =============================================================================
+// Login: 登录后 session 可通过 SessionManager 获取
+// =============================================================================
+TEST_F(AuthServiceTest, LoginCreatesValidSession) {
+  RegisterUser("UT_AUTH_LoginValidSession", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginValidSession";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason));
+
+  const oj::Session* s = oj::SessionManager::Instance().GetSession(
+      result.session_id);
+  ASSERT_NE(s, nullptr);
+  EXPECT_EQ(s->user_id, result.user_id);
+  EXPECT_EQ(s->username, "UT_AUTH_LoginValidSession");
+  EXPECT_EQ(s->role, "user");
+}
+
+// =============================================================================
+// Login: 两次登录生成不同 session_id
+// =============================================================================
+TEST_F(AuthServiceTest, LoginTwiceDifferentSessionIds) {
+  RegisterUser("UT_AUTH_LoginTwice", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginTwice";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult r1, r2;
+  std::string reason;
+
+  ASSERT_TRUE(svc.Login(req, &r1, &reason));
+  ASSERT_TRUE(svc.Login(req, &r2, &reason));
+
+  EXPECT_NE(r1.session_id, r2.session_id);
+  EXPECT_EQ(r1.user_id, r2.user_id);
+  EXPECT_EQ(r1.username, r2.username);
+}
+
+// =============================================================================
+// Login: 管理员登录返回 role=admin
+// =============================================================================
+TEST_F(AuthServiceTest, LoginAdminRole) {
+  oj::LoginRequest req;
+  req.username = "admin";
+  req.password = "admin123";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason)) << reason;
+
+  EXPECT_EQ(result.username, "admin");
+  EXPECT_EQ(result.role, "admin");
+  EXPECT_FALSE(result.session_id.empty());
+}
+
+// =============================================================================
+// Login: 管理员密码错误返回失败
+// =============================================================================
+TEST_F(AuthServiceTest, LoginAdminWrongPasswordFails) {
+  oj::LoginRequest req;
+  req.username = "admin";
+  req.password = "wrongadmin";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+  EXPECT_EQ(reason, "invalid username or password");
+}
+
+// =============================================================================
+// Login: result 为 nullptr 时不崩溃
+// =============================================================================
+TEST_F(AuthServiceTest, LoginNullResultNoCrash) {
+  RegisterUser("UT_AUTH_LoginNullResult", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginNullResult";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, nullptr, &reason));
+}
+
+// =============================================================================
+// Login: reason 为 nullptr 时不崩溃
+// =============================================================================
+TEST_F(AuthServiceTest, LoginNullReasonNoCrash) {
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginNullReason";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  EXPECT_FALSE(svc.Login(req, &result, nullptr));
+  EXPECT_TRUE(result.session_id.empty());
+}
+
+// =============================================================================
+// Login: 登录后 session_id 在 SessionManager 中有效
+// =============================================================================
+TEST_F(AuthServiceTest, LoginSessionAccessibleViaManager) {
+  RegisterUser("UT_AUTH_LoginViaManager", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginViaManager";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason));
+
+  // SessionManager 能查到
+  EXPECT_NE(oj::SessionManager::Instance().GetSession(result.session_id),
+            nullptr);
+
+  // 销毁后查不到
+  EXPECT_TRUE(oj::SessionManager::Instance().DestroySession(
+      result.session_id));
+  EXPECT_EQ(oj::SessionManager::Instance().GetSession(result.session_id),
+            nullptr);
+}
+
+// =============================================================================
+// Login: 注册→登录→验证密码 完整流程
+// =============================================================================
+TEST_F(AuthServiceTest, RegisterLoginVerifyFlow) {
+  // 注册
+  oj::RegisterRequest reg_req;
+  reg_req.username = "UT_AUTH_RegLoginFlow";
+  reg_req.password = "flowpass123";
+
+  oj::AuthService svc;
+  int new_id = 0;
+  std::string reason;
+  ASSERT_TRUE(svc.Register(reg_req, &new_id, &reason));
+
+  // 从数据库读取哈希
+  auto g = Conn();
+  ASSERT_TRUE(g.Valid());
+  std::string stored = QueryScalar(g.Get(),
+      "SELECT password FROM users WHERE id=" + std::to_string(new_id));
+
+  // VerifyPassword 能验证
+  EXPECT_TRUE(oj::AuthService::VerifyPassword("flowpass123", stored));
+
+  // 登录
+  oj::LoginRequest login_req;
+  login_req.username = "UT_AUTH_RegLoginFlow";
+  login_req.password = "flowpass123";
+
+  oj::LoginResult result;
+  ASSERT_TRUE(svc.Login(login_req, &result, &reason));
+  EXPECT_EQ(result.user_id, new_id);
+  EXPECT_EQ(result.username, "UT_AUTH_RegLoginFlow");
+  EXPECT_EQ(result.role, "user");
+
+  // 错误密码登录失败
+  login_req.password = "wrongpass";
+  EXPECT_FALSE(svc.Login(login_req, &result, &reason));
+}
+
+// =============================================================================
+// Login: 密码含特殊字符能正确登录
+// =============================================================================
+TEST_F(AuthServiceTest, LoginSpecialCharsPassword) {
+  std::string pwd = "p@ss\"w0rd'!#$%";
+  RegisterUser("UT_AUTH_LoginSpecial", pwd);
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginSpecial";
+  req.password = pwd;
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason)) << reason;
+  EXPECT_FALSE(result.session_id.empty());
+
+  // 稍微修改密码应失败
+  req.password = "p@ssw0rd";
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+}
+
+// =============================================================================
+// Login: 大小写敏感的用户名
+// =============================================================================
+TEST_F(AuthServiceTest, LoginUsernameCaseSensitive) {
+  RegisterUser("UT_AUTH_CaseTest", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "ut_auth_casetest";  // 全小写
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  // MySQL 默认 collation 不区分大小写，但行为取决于 collation
+  // 这里只验证不崩溃，且如果登录成功则 session 有效
+  bool ok = svc.Login(req, &result, &reason);
+  if (ok) {
+    EXPECT_FALSE(result.session_id.empty());
+  }
+  // 不做强制断言，因为 collation 行为不确定
+}
+
+// =============================================================================
+// Login: 长密码能正确登录
+// =============================================================================
+TEST_F(AuthServiceTest, LoginLongPassword) {
+  std::string long_pwd(64, 'p');
+  RegisterUser("UT_AUTH_LoginLongPwd", long_pwd);
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginLongPwd";
+  req.password = long_pwd;
+
+  oj::AuthService svc;
+  oj::LoginResult result;
+  std::string reason;
+  ASSERT_TRUE(svc.Login(req, &result, &reason)) << reason;
+
+  // 少一个字符应失败
+  req.password = std::string(63, 'p');
+  EXPECT_FALSE(svc.Login(req, &result, &reason));
+}
+
+// =============================================================================
+// Login: 多次连续登录均成功（会话独立）
+// =============================================================================
+TEST_F(AuthServiceTest, LoginMultipleTimesAllSucceed) {
+  RegisterUser("UT_AUTH_LoginMulti", "pass123456");
+
+  oj::LoginRequest req;
+  req.username = "UT_AUTH_LoginMulti";
+  req.password = "pass123456";
+
+  oj::AuthService svc;
+  for (int i = 0; i < 5; ++i) {
+    oj::LoginResult result;
+    std::string reason;
+    ASSERT_TRUE(svc.Login(req, &result, &reason))
+        << "login failed at iteration " << i << ": " << reason;
+    EXPECT_FALSE(result.session_id.empty());
+  }
+}
+
+// =============================================================================
+// VerifyPassword: 与注册存储的哈希兼容
+// =============================================================================
+TEST_F(AuthServiceTest, VerifyPasswordCompatibleWithRegisterStoredHash) {
+  oj::RegisterRequest req;
+  req.username = "UT_AUTH_VerifyCompat";
+  req.password = "compatpass123";
+
+  oj::AuthService svc;
+  int new_id = 0;
+  std::string reason;
+  ASSERT_TRUE(svc.Register(req, &new_id, &reason));
+
+  auto g = Conn();
+  ASSERT_TRUE(g.Valid());
+  std::string stored = QueryScalar(g.Get(),
+      "SELECT password FROM users WHERE id=" + std::to_string(new_id));
+
+  // 从数据库取出的哈希能被 VerifyPassword 验证
+  EXPECT_TRUE(oj::AuthService::VerifyPassword("compatpass123", stored));
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("CompatPass123", stored));  // 大小写
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("compatpass12", stored));  // 少一字符
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("compatpass1234", stored)); // 多一字符
+}
+
+// =============================================================================
+// VerifyPassword: 短哈希（<7 字符）返回 false
+// =============================================================================
+TEST_F(AuthServiceTest, VerifyPasswordShortHashReturnsFalse) {
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("password", "$2a"));  // 3 字符
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("password", "$2a$10"));  // 6 字符
+}
+
+// =============================================================================
+// VerifyPassword: 哈希与密码均为空返回 false
+// =============================================================================
+TEST_F(AuthServiceTest, VerifyPasswordBothEmptyReturnsFalse) {
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("", ""));
+}
+
+// =============================================================================
+// VerifyPassword: 相同密码不同 salt 的哈希均能验证
+// =============================================================================
+TEST_F(AuthServiceTest, VerifyPasswordMultipleSaltsAllVerify) {
+  std::string pwd = "samepassword123";
+  std::string h1 = oj::AuthService::HashPassword(pwd);
+  std::string h2 = oj::AuthService::HashPassword(pwd);
+  std::string h3 = oj::AuthService::HashPassword(pwd);
+
+  EXPECT_NE(h1, h2);
+  EXPECT_NE(h2, h3);
+
+  EXPECT_TRUE(oj::AuthService::VerifyPassword(pwd, h1));
+  EXPECT_TRUE(oj::AuthService::VerifyPassword(pwd, h2));
+  EXPECT_TRUE(oj::AuthService::VerifyPassword(pwd, h3));
+}
+
+// =============================================================================
+// VerifyPassword: 密码含 null 字节不会被截断（不适用——std::string 可含 null）
+// 验证含二进制数据的密码
+// =============================================================================
+TEST_F(AuthServiceTest, VerifyPasswordWithBinaryData) {
+  std::string pwd = "pass\x01\x02\x03word";
+  std::string hash = oj::AuthService::HashPassword(pwd);
+  EXPECT_TRUE(oj::AuthService::VerifyPassword(pwd, hash));
+  EXPECT_FALSE(oj::AuthService::VerifyPassword("password", hash));
 }

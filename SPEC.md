@@ -231,7 +231,7 @@ mysql -u root oj_db
 ### Phase 4 - 登录注册模块
 - [x] Session/Cookie 认证机制
 - [x] 用户注册 API（用户名唯一性校验）
-- [ ] 用户登录 API
+- [x] 用户登录 API
 
 
 ### Phase 5 - 前端

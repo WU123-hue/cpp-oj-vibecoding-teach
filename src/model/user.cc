@@ -49,6 +49,21 @@ bool User::LoadFromDB(MYSQL* conn, int id) {
   return true;
 }
 
+bool User::LoadFromDBByUsername(MYSQL* conn, const std::string& username) {
+  std::string sql = "SELECT id,username,password,role,created_at "
+                    "FROM users WHERE username=" + Esc(conn, username);
+  if (::mysql_query(conn, sql.c_str()) != 0) return false;
+  MYSQL_RES* res = ::mysql_store_result(conn);
+  if (res == nullptr) return false;
+
+  auto users = MapUsers(res);
+  ::mysql_free_result(res);
+
+  if (users.empty()) return false;
+  *this = std::move(users[0]);
+  return true;
+}
+
 bool User::SaveToDB(MYSQL* conn) {
   if (id_ == 0) {
     std::string sql = "INSERT INTO users(username,password,role) "

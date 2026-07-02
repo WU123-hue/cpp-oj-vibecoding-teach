@@ -11,6 +11,20 @@ struct RegisterRequest {
   std::string password;
 };
 
+// 登录请求
+struct LoginRequest {
+  std::string username;
+  std::string password;
+};
+
+// 登录结果
+struct LoginResult {
+  std::string session_id;  // 会话 ID
+  int         user_id;     // 用户 ID
+  std::string username;    // 用户名
+  std::string role;        // 角色: "user" / "admin"
+};
+
 // 认证业务服务
 class AuthService {
  public:
@@ -24,6 +38,13 @@ class AuthService {
   //   - username 唯一（数据库 UNIQUE 约束）
   // 密码使用 bcrypt 哈希后存储
   bool Register(const RegisterRequest& req, int* new_id, std::string* reason);
+
+  // 用户登录
+  //   req    : 登录请求（username + password 明文）
+  //   result : 成功时填充登录结果（含 session_id）
+  //   reason : 失败时填充错误信息
+  // 流程：按 username 查库 → bcrypt 验证密码 → 创建会话
+  bool Login(const LoginRequest& req, LoginResult* result, std::string* reason);
 
   // 验证密码是否匹配存储的 bcrypt 哈希
   //   password : 用户输入的明文密码

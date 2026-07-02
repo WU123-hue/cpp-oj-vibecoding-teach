@@ -42,6 +42,8 @@ class User {
 
   // 按 id 从数据库加载，成功返回 true
   bool LoadFromDB(MYSQL* conn, int id);
+  // 按 username 从数据库加载，成功返回 true
+  bool LoadFromDBByUsername(MYSQL* conn, const std::string& username);
   // 写入数据库：id_==0 执行 INSERT（并回填自增 id），否则 UPDATE
   bool SaveToDB(MYSQL* conn);
   // 按 id 从数据库删除

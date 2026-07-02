@@ -56,4 +56,4 @@ CREATE TABLE users (
 -- 如需修改请在首次启动后通过管理接口更新密码
 -- -----------------------------------------------------------------------------
 INSERT INTO users (username, password, role) VALUES
-  ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'admin');
+  ('admin', '$2a$10$usesomesillystringforeTeroxHu44nz6r2P7zLyMaCiQNdWofN.', 'admin');
