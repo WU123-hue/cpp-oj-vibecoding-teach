@@ -1,0 +1,24 @@
+[2026-07-02 12:07:00] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:07:00] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:07:01] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:07:01] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:10:21] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:10:21] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:10:22] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:10:22] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:27:24] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:27:24] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:27:25] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:27:25] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:33:19] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:33:19] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:33:20] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:33:20] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:35:12] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:35:12] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:35:12] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:35:12] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:43:16] [INFO] logger initialized: level=info, file=logs/init_admin.log
+[2026-07-02 12:43:16] [INFO] connection pool init: 1/1 connections established
+[2026-07-02 12:43:17] [INFO] [connection_pool.cc:86] connection pool destroyed
+[2026-07-02 12:43:17] [INFO] [connection_pool.cc:86] connection pool destroyed

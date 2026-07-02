@@ -25,3 +25,145 @@
 [2026-07-01 16:07:32] [INFO] db pool ready: localhost/oj_db pool_size=4
 [2026-07-01 16:07:32] [INFO] HTTP server starting on 0.0.0.0:8080
 [2026-07-01 16:07:34] [INFO] user registered: id=25 username=UT_API_testuser
+[2026-07-02 11:59:20] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 11:59:20] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 11:59:20] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 11:59:20] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 11:59:20] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 11:59:22] [INFO] user registered: id=198 username=alice
+[2026-07-02 11:59:22] [INFO] session created: sid=b24deda72db9e1e3642f630401270aee user=alice role=user
+[2026-07-02 11:59:22] [INFO] user logged in: id=198 username=alice role=user
+[2026-07-02 11:59:23] [INFO] session created: sid=2fb0043b1f15744b9f9006111cb7a4c8 user=admin role=admin
+[2026-07-02 11:59:23] [INFO] user logged in: id=1 username=admin role=admin
+[2026-07-02 11:59:56] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 11:59:56] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 11:59:56] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 11:59:56] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 11:59:56] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 11:59:58] [INFO] session created: sid=c0b4837263c9553bd5c4b2691c1493f1 user=alice role=user
+[2026-07-02 11:59:58] [INFO] user logged in: id=198 username=alice role=user
+[2026-07-02 11:59:58] [INFO] session destroyed: sid=c0b4837263c9553bd5c4b2691c1493f1
+[2026-07-02 11:59:58] [INFO] problem created: id=74 title=A+B Problem
+[2026-07-02 11:59:59] [INFO] execute done: overall=AC passed=2/2 max_ms=11
+[2026-07-02 11:59:59] [INFO] submit: problem_id=74 status=AC passed=2/2
+[2026-07-02 12:00:00] [INFO] execute done: overall=WA passed=0/2 max_ms=13
+[2026-07-02 12:00:00] [INFO] submit: problem_id=74 status=WA passed=0/2
+[2026-07-02 12:00:00] [INFO] compile error: /tmp/oj_exec_bW1xxh/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_bW1xxh/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 12:00:00] [INFO] submit: problem_id=74 status=CE passed=0/2
+[2026-07-02 12:00:05] [INFO] execute done: overall=TLE passed=0/2 max_ms=2744
+[2026-07-02 12:00:05] [INFO] submit: problem_id=74 status=TLE passed=0/2
+[2026-07-02 12:00:06] [INFO] execute done: overall=RE passed=0/2 max_ms=277
+[2026-07-02 12:00:06] [INFO] submit: problem_id=74 status=RE passed=0/2
+[2026-07-02 12:00:06] [INFO] problem deleted: id=74
+[2026-07-02 12:27:25] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 12:27:25] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 12:27:25] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 12:27:25] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 12:27:25] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 12:28:17] [INFO] session created: sid=2c4e989e3af26a346adf7139d866f211 user=admin role=admin
+[2026-07-02 12:28:17] [INFO] user logged in: id=200 username=admin role=admin
+[2026-07-02 12:28:17] [INFO] problem created: id=75 title=UT_CURL_AB
+[2026-07-02 12:28:17] [INFO] problem created: id=76 title=UT_CURL_NoTc
+[2026-07-02 12:28:17] [INFO] problem created: id=77 title=UT_CURL_Hard
+[2026-07-02 12:28:18] [INFO] execute done: overall=AC passed=2/2 max_ms=11
+[2026-07-02 12:28:18] [INFO] submit: problem_id=75 status=AC passed=2/2
+[2026-07-02 12:28:19] [INFO] execute done: overall=WA passed=0/2 max_ms=13
+[2026-07-02 12:28:19] [INFO] submit: problem_id=75 status=WA passed=0/2
+[2026-07-02 12:28:19] [INFO] compile error: /tmp/oj_exec_L2gr4L/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_L2gr4L/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 12:28:19] [INFO] submit: problem_id=75 status=CE passed=0/2
+[2026-07-02 12:28:19] [INFO] problem deleted: id=75
+[2026-07-02 12:28:19] [INFO] problem deleted: id=9999999
+[2026-07-02 12:28:19] [INFO] problem deleted: id=76
+[2026-07-02 12:28:20] [INFO] problem deleted: id=77
+[2026-07-02 12:28:20] [INFO] session destroyed: sid=2c4e989e3af26a346adf7139d866f211
+[2026-07-02 12:33:20] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 12:33:20] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 12:33:20] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 12:33:20] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 12:33:20] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 12:33:22] [INFO] user registered: id=202 username=testcurl
+[2026-07-02 12:33:22] [INFO] session created: sid=2e9607bc673b141340e1c5dde443c57c user=admin role=admin
+[2026-07-02 12:33:22] [INFO] user logged in: id=201 username=admin role=admin
+[2026-07-02 12:33:22] [INFO] session destroyed: sid=2e9607bc673b141340e1c5dde443c57c
+[2026-07-02 12:33:22] [INFO] problem created: id=78 title=UT_CURL_AB
+[2026-07-02 12:33:23] [INFO] execute done: overall=AC passed=1/1 max_ms=12
+[2026-07-02 12:33:23] [INFO] submit: problem_id=78 status=AC passed=1/1
+[2026-07-02 12:33:23] [INFO] compile error: /tmp/oj_exec_x8ArnW/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_x8ArnW/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 12:33:23] [INFO] submit: problem_id=78 status=CE passed=0/1
+[2026-07-02 12:33:23] [INFO] problem deleted: id=78
+[2026-07-02 12:35:12] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 12:35:12] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 12:35:12] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 12:35:12] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 12:35:12] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 12:36:04] [INFO] user registered: id=204 username=testcurl
+[2026-07-02 12:36:04] [INFO] session created: sid=ae8afe007861cc0abcf8f20ad3d46cbe user=admin role=admin
+[2026-07-02 12:36:04] [INFO] user logged in: id=203 username=admin role=admin
+[2026-07-02 12:36:05] [INFO] session created: sid=74f707082081f421f12c467795b4ee4e user=testcurl role=user
+[2026-07-02 12:36:05] [INFO] user logged in: id=204 username=testcurl role=user
+[2026-07-02 12:36:05] [INFO] session destroyed: sid=ae8afe007861cc0abcf8f20ad3d46cbe
+[2026-07-02 12:36:05] [INFO] problem created: id=79 title=UT_CURL_AB
+[2026-07-02 12:36:05] [INFO] problem created: id=80 title=UT_CURL_NoTc
+[2026-07-02 12:36:05] [INFO] problem created: id=81 title=UT_CURL_Hard
+[2026-07-02 12:36:06] [INFO] execute done: overall=AC passed=2/2 max_ms=11
+[2026-07-02 12:36:06] [INFO] submit: problem_id=79 status=AC passed=2/2
+[2026-07-02 12:36:07] [INFO] execute done: overall=WA passed=0/2 max_ms=12
+[2026-07-02 12:36:07] [INFO] submit: problem_id=79 status=WA passed=0/2
+[2026-07-02 12:36:07] [INFO] compile error: /tmp/oj_exec_WGK3nx/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_WGK3nx/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 12:36:07] [INFO] submit: problem_id=79 status=CE passed=0/2
+[2026-07-02 12:36:12] [INFO] execute done: overall=TLE passed=0/2 max_ms=2357
+[2026-07-02 12:36:12] [INFO] submit: problem_id=79 status=TLE passed=0/2
+[2026-07-02 12:36:12] [INFO] execute done: overall=RE passed=0/2 max_ms=210
+[2026-07-02 12:36:12] [INFO] submit: problem_id=79 status=RE passed=0/2
+[2026-07-02 12:36:12] [INFO] problem deleted: id=79
+[2026-07-02 12:36:12] [INFO] problem deleted: id=9999999
+[2026-07-02 12:36:12] [INFO] problem deleted: id=80
+[2026-07-02 12:36:13] [INFO] problem deleted: id=81
+[2026-07-02 12:43:17] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-02 12:43:17] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-02 12:43:17] [INFO] connection pool init: 4/4 connections established
+[2026-07-02 12:43:17] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-02 12:43:17] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-02 12:43:19] [INFO] user registered: id=206 username=testcurl
+[2026-07-02 12:43:19] [INFO] session created: sid=2fa6d2879ad1a81b94dc0d9e63da5b4d user=admin role=admin
+[2026-07-02 12:43:19] [INFO] user logged in: id=205 username=admin role=admin
+[2026-07-02 12:43:19] [INFO] session created: sid=8fa0a0f6ec879079bcd6c005b3920166 user=testcurl role=user
+[2026-07-02 12:43:19] [INFO] user logged in: id=206 username=testcurl role=user
+[2026-07-02 12:43:19] [INFO] session destroyed: sid=2fa6d2879ad1a81b94dc0d9e63da5b4d
+[2026-07-02 12:43:19] [INFO] problem created: id=82 title=UT_CURL_AB
+[2026-07-02 12:43:19] [INFO] problem created: id=83 title=UT_CURL_NoTc
+[2026-07-02 12:43:19] [INFO] problem created: id=84 title=UT_CURL_Hard
+[2026-07-02 12:43:20] [INFO] execute done: overall=AC passed=2/2 max_ms=11
+[2026-07-02 12:43:20] [INFO] submit: problem_id=82 status=AC passed=2/2
+[2026-07-02 12:43:21] [INFO] execute done: overall=WA passed=0/2 max_ms=11
+[2026-07-02 12:43:21] [INFO] submit: problem_id=82 status=WA passed=0/2
+[2026-07-02 12:43:21] [INFO] compile error: /tmp/oj_exec_WRDuhq/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_WRDuhq/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-02 12:43:21] [INFO] submit: problem_id=82 status=CE passed=0/2
+[2026-07-02 12:43:25] [INFO] execute done: overall=TLE passed=0/2 max_ms=2287
+[2026-07-02 12:43:25] [INFO] submit: problem_id=82 status=TLE passed=0/2
+[2026-07-02 12:43:26] [INFO] execute done: overall=RE passed=0/2 max_ms=238
+[2026-07-02 12:43:26] [INFO] submit: problem_id=82 status=RE passed=0/2
+[2026-07-02 12:43:26] [INFO] problem deleted: id=82
+[2026-07-02 12:43:26] [INFO] problem deleted: id=9999999
+[2026-07-02 12:43:26] [INFO] problem deleted: id=83
+[2026-07-02 12:43:26] [INFO] problem deleted: id=84
