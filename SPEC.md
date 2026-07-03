@@ -245,10 +245,10 @@ mysql -u root oj_db
 - [x] 大屏落地页
 
 ### Phase 6 - 安全与部署
-- [ ] 管理员权限校验
-- [ ] 用户认证（Session/Cookie）
-- [ ] 基础输入校验
-- [ ] 部署文档
+- [x] 管理员权限校验
+- [x] 用户认证（Session/Cookie）
+- [x] 基础输入校验
+- [x] 部署文档,README文档
 
 ---
 
