@@ -258,3 +258,55 @@
 [2026-07-02 21:46:59] [INFO] connection pool init: 4/4 connections established
 [2026-07-02 21:46:59] [INFO] db pool ready: localhost/oj_db pool_size=4
 [2026-07-02 21:46:59] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-03 18:39:45] [INFO] logger initialized: level=info, file=logs/oj.log
+[2026-07-03 18:39:45] [INFO] [main.cc:19] ===== OJ System starting =====
+[2026-07-03 18:39:45] [INFO] connection pool init: 4/4 connections established
+[2026-07-03 18:39:45] [INFO] db pool ready: localhost/oj_db pool_size=4
+[2026-07-03 18:39:45] [INFO] HTTP server starting on 0.0.0.0:8080
+[2026-07-03 18:45:01] [INFO] session created: sid=b31544ae0a601e20b231f04d09c5e5e3 user=admin role=admin
+[2026-07-03 18:45:01] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-03 19:08:21] [INFO] session created: sid=6df7e5acec243d1f35fd87d2ccd3f4a0 user=admin role=admin
+[2026-07-03 19:08:21] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-03 19:08:58] [INFO] session destroyed: sid=6df7e5acec243d1f35fd87d2ccd3f4a0
+[2026-07-03 19:09:58] [INFO] session created: sid=ec963cfa5f483497afa859d21312cfad user=admin role=admin
+[2026-07-03 19:09:58] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-03 19:11:15] [INFO] execute done: overall=AC passed=1/1 max_ms=11
+[2026-07-03 19:11:15] [INFO] submit: problem_id=85 status=AC passed=1/1
+[2026-07-03 19:11:50] [INFO] user registered: id=209 username=webtest_e2e_flow
+[2026-07-03 19:11:50] [INFO] session created: sid=fcd853f3fee81f23b111a56da680257a user=webtest_e2e_flow role=user
+[2026-07-03 19:11:50] [INFO] user logged in: id=209 username=webtest_e2e_flow role=user
+[2026-07-03 19:11:50] [INFO] session destroyed: sid=fcd853f3fee81f23b111a56da680257a
+[2026-07-03 19:12:20] [INFO] user registered: id=210 username=webtest_e2e_flow2
+[2026-07-03 19:12:20] [INFO] session created: sid=e2acc55c9ec39bea75b24e66814d5468 user=webtest_e2e_flow2 role=user
+[2026-07-03 19:12:20] [INFO] user logged in: id=210 username=webtest_e2e_flow2 role=user
+[2026-07-03 19:12:20] [INFO] session destroyed: sid=e2acc55c9ec39bea75b24e66814d5468
+[2026-07-03 19:12:38] [INFO] session created: sid=28ceb5350661bb40c9ed692f4f970ca5 user=webtest_e2e_flow2 role=user
+[2026-07-03 19:12:38] [INFO] user logged in: id=210 username=webtest_e2e_flow2 role=user
+[2026-07-03 19:12:38] [INFO] session destroyed: sid=28ceb5350661bb40c9ed692f4f970ca5
+[2026-07-03 19:13:05] [INFO] user registered: id=211 username=webtest_e2e_1783077184987
+[2026-07-03 19:13:05] [INFO] session created: sid=09b9bef29fbdca50420f6d4e9cf8e149 user=webtest_e2e_1783077184987 role=user
+[2026-07-03 19:13:05] [INFO] user logged in: id=211 username=webtest_e2e_1783077184987 role=user
+[2026-07-03 19:13:05] [INFO] session destroyed: sid=09b9bef29fbdca50420f6d4e9cf8e149
+[2026-07-03 19:13:31] [INFO] problem created: id=88 title=WebTest_E2E_Create_1783077211451
+[2026-07-03 19:15:55] [INFO] user registered: id=212 username=webtest_e2e_1783077326401
+[2026-07-03 19:16:28] [INFO] session created: sid=874c9ad5476480093adeafa555330788 user=webtest_e2e_1783077326401 role=user
+[2026-07-03 19:16:28] [INFO] user logged in: id=212 username=webtest_e2e_1783077326401 role=user
+[2026-07-03 19:16:45] [INFO] session destroyed: sid=874c9ad5476480093adeafa555330788
+[2026-07-03 19:17:26] [INFO] session created: sid=0cf587e8143f30836df2525d55ae8753 user=admin role=admin
+[2026-07-03 19:17:26] [INFO] user logged in: id=207 username=admin role=admin
+[2026-07-03 19:19:11] [INFO] problem created: id=89 title=WebTest_E2E_UI
+[2026-07-03 19:20:21] [INFO] execute done: overall=AC passed=2/2 max_ms=10
+[2026-07-03 19:20:21] [INFO] submit: problem_id=89 status=AC passed=2/2
+[2026-07-03 19:20:55] [INFO] execute done: overall=WA passed=0/2 max_ms=11
+[2026-07-03 19:20:55] [INFO] submit: problem_id=89 status=WA passed=0/2
+[2026-07-03 19:21:27] [INFO] compile error: /tmp/oj_exec_BV8pou/main.cpp: In function ‘int main()’:
+/tmp/oj_exec_BV8pou/main.cpp:1:13: error: ‘syntax’ was not declared in this scope
+    1 | int main(){ syntax error }
+      |             ^~~~~~
+
+[2026-07-03 19:21:27] [INFO] submit: problem_id=89 status=CE passed=0/2
+[2026-07-03 19:22:01] [INFO] execute done: overall=TLE passed=0/2 max_ms=2503
+[2026-07-03 19:22:01] [INFO] submit: problem_id=89 status=TLE passed=0/2
+[2026-07-03 19:22:40] [INFO] execute done: overall=RE passed=0/2 max_ms=172
+[2026-07-03 19:22:40] [INFO] submit: problem_id=89 status=RE passed=0/2
+[2026-07-03 19:23:53] [INFO] problem deleted: id=89
